@@ -1,19 +1,27 @@
 const canvas = document.getElementById("canvas");
+//User can change the size of the game grid.
 const gridWidth = 40;
 const gridHeight = 40;
 const tileSize = 16;
+
+//This sets the size of the canvas according to the sized given above.
 canvas.width = (tileSize*gridWidth);
 canvas.height = (tileSize*gridHeight);
+
+//Get the context.
 const ctx = canvas.getContext("2d");
+//Some variables used in game.
 let snake;
 let apple;
 let dir = 0;
 let maxScore = 0;
 let gameOver = false;
+
 window.onload = function(){
     console.log("Script loaded")
     init();
 }
+//Init function starts the game.
 const init = function(){
     console.log("Init");
     gameOver = false;
@@ -28,6 +36,7 @@ const init = function(){
     let appleStartY = Math.floor(canvas.height/tileSize/2);
     apple = new Apple([appleStartX,appleStartY])
 }
+//Snake that the player controls and all its methods.
 const Snake = function(pos){
     this.pos = pos;
     this.bodyParts = [];
@@ -99,15 +108,18 @@ const Snake = function(pos){
         ctx.fillRect(x*tileSize,y*tileSize,tileSize,tileSize);
     }
 }
+//Gives random position withing the bounds of the games grid.
 function getRandomPos(){
     let x = Math.floor(Math.random()*gridWidth);
     let y = Math.floor(Math.random()*gridHeight);
     return [x,y];
 }
+//Just a helper function that contains a position.
 const BodyPart = function(pos){
     this.pos = pos;
 }
 
+//Apple that snake wants to eat and its functions.
 const Apple = function(pos){
     this.pos = pos;
     this.getEaten = function(){
@@ -124,7 +136,7 @@ const Apple = function(pos){
     }
 }
 
-
+//Runs the game with the interval given at the bottom of this file.
 const gameLoop = function(){
     if(gameOver){
         ctx.font = "48px serif";
@@ -145,7 +157,7 @@ const gameLoop = function(){
         apple.draw();
     }
 }
-
+//Handle user input.
 document.onkeydown = function(event){
     
     if(event.key == " "){
@@ -174,6 +186,11 @@ document.onkeydown = function(event){
 
     }
 }
+/* try to change direction. 
+* This approach unfortunately causes a bug that
+* if you are faster than the updaterate of the game, 
+* you can change direction too fast and collide with yourself.
+*/
 const checkDirChange = function(attempt){
     switch(dir){
         case 0:
@@ -204,6 +221,7 @@ const checkDirChange = function(attempt){
             break;
     }
 }
+//Call this function to end game.
 function endGame(){
     gameOver = true;
     if(snake.bodyParts.length> maxScore){
