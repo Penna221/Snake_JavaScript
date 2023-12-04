@@ -16,6 +16,7 @@ const init = function(){
     snake.eat();
     snake.eat();
     snake.eat();
+    snake.eat();
 }
 const Snake = function(pos){
     this.pos = pos;
@@ -48,7 +49,7 @@ const Snake = function(pos){
             default:
                 return;
         }
-        console.log("X: " + this.pos[0] + " Y: " + this.pos[1]);
+        //console.log("X: " + this.pos[0] + " Y: " + this.pos[1]);
         this.eat();
         this.bodyParts.shift();
     }
@@ -85,4 +86,57 @@ const gameLoop = function(){
     snake.move();
     snake.draw();
 }
-setInterval(gameLoop,1000/1)
+document.onkeydown = function(event){
+    
+    let key = event.key;
+    let toGo = dir;
+    switch (key){
+        case "ArrowLeft":
+            toGo = 1;
+            break;
+        case "ArrowRight":
+            toGo = 0;
+            break;
+        case "ArrowUp":
+            toGo = 2;
+            break;
+        case "ArrowDown":
+            toGo = 3;
+            break;
+        default:
+            console.log(event);
+            break;
+    }
+    checkDirChange(toGo);
+}
+const checkDirChange = function(attempt){
+    switch(dir){
+        case 0:
+            //Currently going right
+            if(attempt==2 || attempt == 3){
+                dir = attempt;
+            }
+            break;
+        case 1:
+            //Currently going left
+            if(attempt==2 || attempt == 3){
+                dir = attempt;
+            }
+            break;
+        case 2:
+            //Currently going up
+            if(attempt==0 || attempt == 1){
+                dir = attempt;
+            }
+            break;
+        case 3:
+            //Currently going down
+            if(attempt==0 || attempt == 1){
+                dir = attempt;
+            }
+            break;
+        default:
+            break;
+    }
+}
+setInterval(gameLoop,1000/15)
