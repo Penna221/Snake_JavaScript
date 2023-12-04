@@ -1,0 +1,8 @@
+body {
+    background-color: rgb(40,0,40);
+    text-align: center;
+}
+#canvas {
+    border-style: solid;
+    border-color: black;
+}
